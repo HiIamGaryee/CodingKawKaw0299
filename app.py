@@ -101,15 +101,21 @@ class UrbanPulseAI:
     def predict(self, loc_data, weather_txt, intervention_code):
         if not self.loaded: return 85.0, 0.0, 8000
         
-        # Parse Inputs
-        w_code = 0 if "Rain" in weather_txt else 2
+        # Parse Inputs - Match data generation: 0=Rain, 1=Cloudy, 2=Sunny
+        if "Rain" in weather_txt:
+            w_code = 0
+        elif "Cloudy" in weather_txt:
+            w_code = 1
+        else:  # Sunny
+            w_code = 2
         
         # --- NEW LOGIC FOR INTERVENTIONS ---
         i_code = 0
         traffic_mod = 0
         
         traffic = loc_data["base_traffic"]
-        if w_code == 2: traffic += 500 # Sunny adds traffic
+        if w_code == 0: traffic *= 0.85  # Rain reduces traffic (people cancel trips)
+        elif w_code == 2: traffic += 500 # Sunny adds traffic
 
         if intervention_code == "Trees": 
             i_code = 1
@@ -194,7 +200,7 @@ with c_title:
 
 selected_loc_name = st.selectbox("📍 Active District", list(LOCATIONS.keys()))
 loc_data = LOCATIONS[selected_loc_name]
-weather = st.radio("Weather Condition", ["☀️ Sunny", "🌧️ Heavy Rain"], horizontal=True)
+weather = st.radio("Weather Condition", ["☀️ Sunny", "☁️ Cloudy", "🌧️ Heavy Rain"], horizontal=True)
 
 st.markdown("---")
 
@@ -297,6 +303,14 @@ with st.sidebar:
         st.info("Save at least 2 scenarios to compare")
     
     st.markdown("---")
+    
+    # Share functionality
+    st.markdown("### 🌐 Share App")
+    if st.button("🔗 Get Shareable Link", use_container_width=True):
+        st.info("💡 Run 'python3 share.py' in terminal to get ngrok link")
+        st.code("python3 share.py", language="bash")
+    
+    st.markdown("---")
     st.caption("**UrbanPulse v1.0**\n\nSDG 11 Hackathon Project\n\nSimulate first, build second.")
 
 # --- 10. DASHBOARD ---
@@ -364,6 +378,33 @@ if st.session_state.show_charts:
         })
         st.bar_chart(roi_data.set_index('Metric'), height=150)
         st.caption(f"Health ROI: RM {r:.2f}M annually")
+    
+    # Historical comparison if scenarios exist
+    if len(st.session_state.saved_scenarios) > 0:
+        st.markdown("---")
+        st.markdown("#### 📊 Historical Scenarios Comparison")
+        
+        # Create comparison chart
+        hist_data = []
+        for scenario in st.session_state.saved_scenarios:
+            hist_data.append({
+                'Scenario': scenario['name'],
+                'Stress': scenario['stress'],
+                'ROI': scenario['roi'],
+                'Traffic': scenario['traffic']
+            })
+        
+        if hist_data:
+            hist_df = pd.DataFrame(hist_data)
+            
+            col_hist1, col_hist2 = st.columns(2)
+            with col_hist1:
+                st.bar_chart(hist_df.set_index('Scenario')[['Stress']], height=200)
+                st.caption("Stress Levels Across Scenarios")
+            
+            with col_hist2:
+                st.bar_chart(hist_df.set_index('Scenario')[['ROI']], height=200)
+                st.caption("ROI Comparison Across Scenarios")
 
 c_vis, c_ai = st.columns([1.5, 1])
 
@@ -518,8 +559,13 @@ with c_ai:
     
     # Export Report
     st.markdown("---")
-    st.markdown("### 📄 Export Report")
-    report_data = f"""
+    st.markdown("### 📄 Export Options")
+    
+    col_exp1, col_exp2 = st.columns(2)
+    
+    with col_exp1:
+        # TXT Report
+        report_data = f"""
 # UrbanPulse Scenario Report
 
 **Location:** {selected_loc_name}
@@ -537,9 +583,35 @@ with c_ai:
 
 ## Recommendations
 """
-    st.download_button(
-        label="📥 Download Report (TXT)",
-        data=report_data,
-        file_name=f"urbanpulse_report_{time.strftime('%Y%m%d_%H%M%S')}.txt",
-        mime="text/plain"
-    )
+        st.download_button(
+            label="📥 TXT Report",
+            data=report_data,
+            file_name=f"urbanpulse_report_{time.strftime('%Y%m%d_%H%M%S')}.txt",
+            mime="text/plain",
+            use_container_width=True
+        )
+    
+    with col_exp2:
+        # CSV Export (all saved scenarios)
+        if st.session_state.saved_scenarios:
+            df_export = pd.DataFrame(st.session_state.saved_scenarios)
+            csv_data = df_export.to_csv(index=False)
+            st.download_button(
+                label="📊 CSV Export",
+                data=csv_data,
+                file_name=f"urbanpulse_scenarios_{time.strftime('%Y%m%d_%H%M%S')}.csv",
+                mime="text/csv",
+                use_container_width=True
+            )
+        else:
+            st.info("Save scenarios to export CSV")
+    
+    # Model Status
+    st.markdown("---")
+    st.markdown("### 🤖 Model Status")
+    if math_engine.loaded:
+        st.success("✅ ML Models Loaded Successfully")
+        st.caption("Using trained Random Forest models for predictions")
+    else:
+        st.warning("⚠️ Using Fallback Calculations")
+        st.caption("ML models not found. Using hardcoded logic.")
