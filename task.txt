@@ -1,0 +1,250 @@
+================================================================================
+URBANPULSE - FRONTEND DEVELOPMENT TASKS
+================================================================================
+
+CURRENT STATUS:
+- Backend/AI: ✅ Working (Streamlit app with ML models)
+- Frontend: ⚠️ Basic UI, needs enhancement
+- Images: ❌ Missing (before/after visualization)
+
+FRONTEND LANGUAGE OPTIONS:
+1. CONTINUE WITH STREAMLIT (RECOMMENDED for Hackathon)
+   - Already set up and working
+   - Python-based, easy to modify
+   - Fast to implement changes
+   - Good for prototypes
+
+2. ALTERNATIVE: React/Next.js (if you have more time)
+   - More professional look
+   - Better for production
+   - Requires separate backend API
+   - More time-consuming
+
+RECOMMENDATION: Stick with Streamlit for the prototype, enhance the UI/UX
+
+================================================================================
+10-STEP FRONTEND TASK LIST
+================================================================================
+
+STEP 1: CREATE ASSETS FOLDER & IMAGE STRUCTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Task: Set up folder structure for before/after images
+Action:
+  - Create folder: assets/
+  - Create subfolders: assets/before/ and assets/after/
+  - Prepare image naming: {location_id}_{intervention_type}.jpg
+  - Example: Tun_Razak_Baseline.jpg, Tun_Razak_Green.jpg, etc.
+
+Files to create:
+  - assets/Tun_Razak_Baseline.jpg
+  - assets/Tun_Razak_Green.jpg
+  - assets/Tun_Razak_Bike.jpg
+  - assets/Bangsar_Baseline.jpg
+  - assets/Bangsar_Green.jpg
+  - (repeat for all 3 locations × 6 intervention types)
+
+Status: [ ] TODO
+
+
+STEP 2: GENERATE BEFORE/AFTER IMAGES USING AI
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Task: Create visual before/after comparisons using AI image generation
+Action:
+  - Use DALL-E, Midjourney, or Stable Diffusion
+  - Generate "before" images: Current urban state (polluted, congested)
+  - Generate "after" images: With interventions (green corridors, bike lanes, etc.)
+  - Save images with proper naming convention
+  - For prototype: Can use 3-5 key scenarios only (not all combinations)
+
+Tools to use:
+  - ChatGPT DALL-E (easiest)
+  - Midjourney
+  - Stable Diffusion (local)
+  - Or use existing stock photos and edit them
+
+Status: [ ] TODO
+
+
+STEP 3: ENHANCE STREAMLIT UI - IMPROVE LAYOUT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Task: Make the UI more professional and user-friendly
+Action:
+  - Improve color scheme (use SDG 11 colors: green, blue)
+  - Add better spacing and padding
+  - Create a sidebar for navigation
+  - Add logo/branding at top
+  - Improve button styling (make them more prominent)
+
+Files to modify:
+  - app.py (CSS and layout sections)
+
+Status: [ ] TODO
+
+
+STEP 4: ADD BEFORE/AFTER IMAGE COMPARISON VIEWER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Task: Create side-by-side image comparison feature
+Action:
+  - Add two columns: "Before" and "After"
+  - Display baseline image on left
+  - Display intervention image on right
+  - Add toggle button to switch between views
+  - Add caption explaining the change
+
+Code location:
+  - app.py, section 9 (Dashboard area)
+
+Status: [ ] TODO
+
+
+STEP 5: IMPROVE METRICS DISPLAY (DASHBOARD CARDS)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Task: Make metrics more visual and informative
+Action:
+  - Add progress bars for stress levels
+  - Add color coding (red/yellow/green)
+  - Show percentage changes with arrows
+  - Add icons for each metric
+  - Create custom metric cards with better styling
+
+Files to modify:
+  - app.py (Dashboard section)
+
+Status: [ ] TODO
+
+
+STEP 6: ADD INTERACTIVE MAP VISUALIZATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Task: Enhance the map to show intervention locations
+Action:
+  - Mark intervention points on map
+  - Add different markers for different intervention types
+  - Show traffic flow visualization
+  - Add popup tooltips with information
+  - Use different colors for stress levels
+
+Files to modify:
+  - app.py (pydeck chart section)
+
+Status: [ ] TODO
+
+
+STEP 7: IMPROVE AI COPILOT UI
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Task: Make AI suggestions more prominent and readable
+Action:
+  - Create a chat-like interface for AI feedback
+  - Add typing animation effect
+  - Show AI suggestions in a highlighted box
+  - Add "Ask AI" button for more detailed analysis
+  - Format suggestions with bullet points
+
+Files to modify:
+  - app.py (AI Audit section)
+
+Status: [ ] TODO
+
+
+STEP 8: ADD SCENARIO SAVING/COMPARISON FEATURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Task: Allow users to save and compare different scenarios
+Action:
+  - Add "Save Scenario" button
+  - Store scenarios in session state
+  - Create comparison table showing multiple scenarios
+  - Add "Load Scenario" dropdown
+  - Show side-by-side comparison of saved scenarios
+
+Files to modify:
+  - app.py (add new section for scenario management)
+
+Status: [ ] TODO
+
+
+STEP 9: ADD MOBILE-RESPONSIVE DESIGN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Task: Ensure the app works on tablets/mobile devices
+Action:
+  - Test on different screen sizes
+  - Adjust column layouts for mobile
+  - Make buttons touch-friendly
+  - Stack elements vertically on small screens
+  - Use Streamlit's responsive features
+
+Files to modify:
+  - app.py (layout adjustments)
+
+Status: [ ] TODO
+
+
+STEP 10: POLISH & FINAL TOUCHES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Task: Final UI/UX improvements and testing
+Action:
+  - Add loading animations
+  - Add success/error messages
+  - Improve tooltips and help text
+  - Add footer with project info
+  - Test all features end-to-end
+  - Fix any visual bugs
+  - Add smooth transitions
+
+Files to modify:
+  - app.py (throughout)
+
+Status: [ ] TODO
+
+================================================================================
+QUICK START GUIDE
+================================================================================
+
+PRIORITY TASKS (Do First):
+1. Step 1: Create assets folder
+2. Step 2: Generate images (use AI or stock photos)
+3. Step 4: Add before/after comparison
+4. Step 3: Basic UI improvements
+
+NICE TO HAVE (If Time Permits):
+- Step 5-10: Advanced features
+
+TIME ESTIMATE:
+- Steps 1-4: 2-3 hours (Essential)
+- Steps 5-7: 2-3 hours (Important)
+- Steps 8-10: 3-4 hours (Bonus)
+
+TOTAL: 7-10 hours for full implementation
+
+================================================================================
+FRONTEND LANGUAGE RECOMMENDATION
+================================================================================
+
+✅ RECOMMENDED: Continue with Streamlit (Python)
+   - Already working
+   - Fast development
+   - Good for prototypes
+   - No need to learn new framework
+
+❌ NOT RECOMMENDED for Hackathon:
+   - React/Next.js (too time-consuming)
+   - Vue.js (unnecessary complexity)
+   - Pure HTML/CSS/JS (would need to rebuild everything)
+
+STREAMLIT ADVANTAGES:
+- Python-based (you already know it)
+- Built-in components (charts, maps, forms)
+- Easy deployment
+- Good documentation
+- Perfect for data science apps
+
+================================================================================
+NEXT STEPS
+================================================================================
+
+1. Start with Step 1: Create assets/ folder
+2. Generate or find 6-10 key images (before/after)
+3. Update app.py to display images properly
+4. Test the app: streamlit run app.py
+5. Iterate based on what looks good
+
+GOOD LUCK WITH YOUR HACKATHON! 🚀
+
